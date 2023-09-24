@@ -32,25 +32,7 @@ kmeans.fit(X_normalized)
 cluster_centers = kmeans.cluster_centers_
 cluster_labels = kmeans.labels_
 
-tagged_data = np.concatenate((X.values, cluster_labels.reshape(-1, 1)), axis=1)
-np.savetxt('./tagged_data.csv', tagged_data, delimiter=',')
-
-# pca = PCA(n_components=3)
-#
-# # 拟合PCA模型并进行降维
-# X_2D = pca.fit_transform(X)
-#
-# # X_2D现在包含了降维后的数据，形状为 (n_samples, 2)
-# plt.figure(figsize=(8, 6))
-# ax = plt.axes(projection='3d')
-# for i in range(100):
-#     ax.scatter(X_2D[i, 0], X_2D[i, 1], X_2D[i, 2], marker='o', c='b', s=30)
-# plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], c='red', marker='x', s=200, label='Centroids')
-# plt.title('PCA Dimension Reduction')
-# plt.xlabel('Principal Component 1')
-# plt.ylabel('Principal Component 2')
-# plt.grid(True)
-# plt.show()
+np.savetxt('./class.csv', cluster_labels, fmt='%d', delimiter=',')
 
 fig, axes = plt.subplots(4, 3)
 for i in range(4):
