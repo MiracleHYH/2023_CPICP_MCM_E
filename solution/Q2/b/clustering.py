@@ -32,6 +32,9 @@ kmeans.fit(X_normalized)
 cluster_centers = kmeans.cluster_centers_
 cluster_labels = kmeans.labels_
 
+tagged_data = np.concatenate((X.values, cluster_labels.reshape(-1, 1)), axis=1)
+np.savetxt('./tagged_data.csv', tagged_data, delimiter=',')
+
 # pca = PCA(n_components=3)
 #
 # # 拟合PCA模型并进行降维
