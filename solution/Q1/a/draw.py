@@ -5,8 +5,8 @@ from scipy.optimize import curve_fit
 import numpy as np
 
 
-def linear_model(x, m, b):
-    return m * x + b
+def linear_model(x, m):
+    return m * x
 
 
 def main():
@@ -46,20 +46,20 @@ def main():
                     #     # ax.scatter(dt, v_start, v_absolute, c='b')
                     #     # break
             plt.plot(x, y, c='b')
-    X = np.array(X)
-    Y = np.array(Y)
-    params, covariances = curve_fit(linear_model, X, Y)
-    m, b = params
-    print("斜率 m:", m)
-    print("截距 b:", b)
-
-    # 绘制拟合曲线和原始数据
-    # plt.scatter(X, Y, label='Data', color='blue')
-    plt.plot(X, linear_model(X, m, b), label='Fitted Line', color='red')
-    plt.xlabel('X')
-    plt.ylabel('Y')
-    plt.legend()
-    plt.grid(True)
+    # X = np.array(X)
+    # Y = np.array(Y)
+    # params, covariances = curve_fit(linear_model, X, Y)
+    # m = params
+    # print("斜率 m:", m)
+    # # print("截距 b:", b)
+    #
+    # # 绘制拟合曲线和原始数据
+    # # plt.scatter(X, Y, label='Data', color='blue')
+    # plt.plot(X, linear_model(X, m), label='Fitted Line', color='red')
+    # plt.xlabel('X')
+    # plt.ylabel('Y')
+    # plt.legend()
+    # plt.grid(True)
     plt.show()
     # ax.set_xlabel('dt')
     # ax.set_ylabel('v_start')
@@ -67,6 +67,16 @@ def main():
     # ax.legend()
     # plt.tight_layout()
     # plt.show()
+    # t_rate = (1.33-b)/m
+    # answers = []
+    # for i in range(100):
+    #     if tag.iloc[i, 0] == 0:
+    #         answers.append(0)
+    #         continue
+    #     (_, v_start, _, _) = ast.literal_eval(df.iloc[i, 1])
+    #     t_v = (6 / v_start + 1 - b) / m
+    #     answers.append(t_rate if t_rate < t_v else t_v)
+    # pd.DataFrame(answers, columns=['predict_t']).to_csv('./answer.csv', index=False)
 
 
 if __name__ == '__main__':
