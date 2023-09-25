@@ -8,9 +8,9 @@ table2 = pd.read_csv(os.path.join(dataPath, 'table2.csv'))
 table3_ed = pd.read_csv(os.path.join(dataPath, 'table3_ed.csv'))
 table3_hm = pd.read_csv(os.path.join(dataPath, 'table3_hemo.csv'))
 
-self_info = table1.iloc[:, 4:22].drop(columns=['脑出血前mRS评分', '血压'])
+self_info = table1.iloc[:, 4:22].drop(columns=['血压'])
 pressure = table1['血压'].str.split('/', expand=True)
-mRS = table1['脑出血前mRS评分'].astype(np.int32)
+mRS = table1['90天mRS'].fillna(-1).astype(np.int32)
 self_info['性别'] = self_info['性别'].map({'男': 1, '女': 0})
 
 vp_info = table2.iloc[:, 2:23]

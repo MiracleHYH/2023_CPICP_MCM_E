@@ -8,8 +8,8 @@ dataset = pd.read_csv('./dataset.csv', header=None)
 
 X_train = dataset.iloc[:100, :-1].values
 y_train = dataset.iloc[:100, -1].values
-X_test = dataset.iloc[:, :-1].values
-y_test = dataset.iloc[:, -1].values
+X_test = dataset.iloc[100:, :-1].values
+y_test = dataset.iloc[100:, -1].values
 
 # 创建 SVM 模型
 model = svm.SVC(kernel='linear')  # 选择线性 SVM，你也可以选择其他核函数
@@ -18,14 +18,15 @@ model = svm.SVC(kernel='linear')  # 选择线性 SVM，你也可以选择其他�
 model.fit(X_train, y_train)
 
 y_pred = model.predict(X_test)
-
-# 计算准确度
-accuracy = accuracy_score(y_test, y_pred)
-print("准确度:", accuracy)
-
-# 打印分类报告
-print(classification_report(y_test, y_pred))
-
-# 打印混淆矩阵
-conf_matrix = confusion_matrix(y_test, y_pred)
-print("混淆矩阵:\n", conf_matrix)
+y_pred
+np.savetxt('./answer.csv', y_pred.astype(np.int32), delimiter=',', fmt='%d')
+# # 计算准确度
+# accuracy = accuracy_score(y_test, y_pred)
+# print("准确度:", accuracy)
+#
+# # 打印分类报告
+# print(classification_report(y_test, y_pred))
+#
+# # 打印混淆矩阵
+# conf_matrix = confusion_matrix(y_test, y_pred)
+# print("混淆矩阵:\n", conf_matrix)
