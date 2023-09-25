@@ -4,6 +4,11 @@ import torch.optim as optim
 import numpy as np
 import pandas as pd
 from Model import BinaryClassificationModel
+from tensorboardX import SummaryWriter
+from conf import logPath
+import os
+
+writer = SummaryWriter(os.path.join(logPath, 'Q1/b'))
 
 data = pd.read_csv('./dataset.csv', header=None)
 
@@ -37,9 +42,9 @@ for epoch in range(epochs):
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
-
-    if (epoch + 1) % 100 == 0:
-        print(f'Epoch [{epoch + 1}/{epochs}], Loss: {loss.item()}')
+    writer.add_scalar('Loss', loss, global_step=epoch)
+    # if (epoch + 1) % 100 == 0:
+    #     print(f'Epoch [{epoch + 1}/{epochs}], Loss: {loss.item()}')
 
 # 预测概率
 with torch.no_grad():
