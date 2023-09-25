@@ -45,7 +45,7 @@ for epoch in range(epochs):
     writer.add_scalar('Loss', loss, global_step=epoch)
     # if (epoch + 1) % 100 == 0:
     #     print(f'Epoch [{epoch + 1}/{epochs}], Loss: {loss.item()}')
-
+writer.close()
 # 预测概率
 with torch.no_grad():
     probabilities = model(X_test)
