@@ -26,6 +26,7 @@ def loss_function(params, x, y):
     weights = np.array([bisquare_weight(r) for r in residuals])
     return weights * residuals
 
+
 # 初始参数猜测
 initial_guess = (1.0, 1.0)
 
@@ -66,7 +67,7 @@ def main():
                     #     # plt.axhline(y=30, color='red', linestyle='--', label='y=30')
                     #     # ax.scatter(dt, v_start, v_absolute, c='b')
                     #     # break
-            plt.plot(x, y, c='b')
+            # plt.plot(x, y, c='b')
     X = np.array(X)
     Y = np.array(Y)
     # params, covariances = curve_fit(linear_model, X, Y)
@@ -79,12 +80,12 @@ def main():
     print("截距 b:", b)
     #
     # # 绘制拟合曲线和原始数据
-    # # plt.scatter(X, Y, label='Data', color='blue')
-    # plt.plot(X, linear_model(X, m), label='Fitted Line', color='red')
-    # plt.xlabel('X')
-    # plt.ylabel('Y')
-    # plt.legend()
-    # plt.grid(True)
+    plt.scatter(X, Y, label='Data', color='blue')
+    plt.plot(X, m * X + b, label='Fitted Line', color='red')
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.legend()
+    plt.grid(True)
     plt.show()
     # ax.set_xlabel('dt')
     # ax.set_ylabel('v_start')
@@ -100,7 +101,8 @@ def main():
             continue
         (_, v_start, _, _) = ast.literal_eval(df.iloc[i, 1])
         t_v = (6 / v_start + 1 - b) / m
-        answers.append(t_rate if t_rate < t_v else t_v)
+        t_answer = t_rate if t_rate < t_v else t_v
+        answers.append(t_answer if t_answer < 2.0 else 0)
     pd.DataFrame(answers, columns=['predict_t']).to_csv('./answer.csv', index=False)
 
 
