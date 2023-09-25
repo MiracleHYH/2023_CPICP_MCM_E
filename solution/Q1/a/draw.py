@@ -2,11 +2,32 @@ import pandas as pd
 import ast
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
+from scipy.optimize import least_squares
 import numpy as np
 
 
-def linear_model(x, m):
-    return m * x
+def linear_model(params, x):
+    m, b = params
+    return m * x + b
+
+
+# 定义 bisquare 权重函数
+def bisquare_weight(r):
+    c = 4.685  # Huber M-estimator consistency constant
+    if abs(r) <= c:
+        return (1 - (r / c) ** 2) ** 2
+    else:
+        return 0
+
+
+# 定义损失函数，使用 bisquare 权重
+def loss_function(params, x, y):
+    residuals = y - linear_model(params, x)
+    weights = np.array([bisquare_weight(r) for r in residuals])
+    return weights * residuals
+
+# 初始参数猜测
+initial_guess = (1.0, 1.0)
 
 
 def main():
@@ -46,12 +67,16 @@ def main():
                     #     # ax.scatter(dt, v_start, v_absolute, c='b')
                     #     # break
             plt.plot(x, y, c='b')
-    # X = np.array(X)
-    # Y = np.array(Y)
+    X = np.array(X)
+    Y = np.array(Y)
     # params, covariances = curve_fit(linear_model, X, Y)
-    # m = params
-    # print("斜率 m:", m)
-    # # print("截距 b:", b)
+    # m, b = params
+    result = least_squares(loss_function, initial_guess, args=(X, Y))
+
+    # 获取拟合的参数值
+    m, b = result.x
+    print("斜率 m:", m)
+    print("截距 b:", b)
     #
     # # 绘制拟合曲线和原始数据
     # # plt.scatter(X, Y, label='Data', color='blue')
@@ -67,16 +92,16 @@ def main():
     # ax.legend()
     # plt.tight_layout()
     # plt.show()
-    # t_rate = (1.33-b)/m
-    # answers = []
-    # for i in range(100):
-    #     if tag.iloc[i, 0] == 0:
-    #         answers.append(0)
-    #         continue
-    #     (_, v_start, _, _) = ast.literal_eval(df.iloc[i, 1])
-    #     t_v = (6 / v_start + 1 - b) / m
-    #     answers.append(t_rate if t_rate < t_v else t_v)
-    # pd.DataFrame(answers, columns=['predict_t']).to_csv('./answer.csv', index=False)
+    t_rate = (1.33 - b) / m
+    answers = []
+    for i in range(100):
+        if tag.iloc[i, 0] == 0:
+            answers.append(0)
+            continue
+        (_, v_start, _, _) = ast.literal_eval(df.iloc[i, 1])
+        t_v = (6 / v_start + 1 - b) / m
+        answers.append(t_rate if t_rate < t_v else t_v)
+    pd.DataFrame(answers, columns=['predict_t']).to_csv('./answer.csv', index=False)
 
 
 if __name__ == '__main__':
