@@ -28,5 +28,5 @@ for i in range(100):
         if not pd.isnull(table2.iloc[i, idx_v]):
             dt = get_time(table_time.iloc[i, idx_time]) - time_start
             dt_days = ((dt.total_seconds() / 3600) + diagnose_duration) / 24
-            tagged_data.append([dt_days, table2.iloc[i, idx_v] / 1000, person_class.iloc[i, 0]])
-pd.DataFrame(tagged_data, columns=['dt', 'v_ed', 'class']).to_csv('./tagged_points.csv', index=False)
+            tagged_data.append([i, dt_days, table2.iloc[i, idx_v] / 1000, person_class.iloc[i, 0]])
+pd.DataFrame(tagged_data, columns=['id', 'dt', 'v_ed', 'class']).to_csv('./tagged_points.csv', index=False)
